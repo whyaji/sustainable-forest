@@ -13,8 +13,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { ROLE } from '@/enum/role.enum';
-import { useUserStore } from '@/lib/stores/userStore';
 
 import { NavMain } from './nav-main';
 import { NavSecondary } from './nav-secondary';
@@ -41,9 +39,7 @@ export function AppSidebar({
     icon?: LucideIcon;
   }[];
 }) {
-  const user = useUserStore((state) => state.user);
-
-  const homeUrl = user?.role === ROLE.ADMIN ? '/admin' : '/';
+  const homeUrl = '/';
 
   const { setOpenMobile } = useSidebar();
 

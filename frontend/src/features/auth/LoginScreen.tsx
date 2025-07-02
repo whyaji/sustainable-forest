@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form';
+import { Link } from '@tanstack/react-router';
 import Cookies from 'js-cookie';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Leaf } from 'lucide-react';
 import { useState } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { toast } from 'sonner';
@@ -8,7 +9,6 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ROLE } from '@/enum/role.enum';
 import { getCurrentUserWithToken, login } from '@/lib/api/authApi';
 import { cn } from '@/lib/utils';
 import { assertAndHandleFormErrors } from '@/lib/utils/setErrorForms';
@@ -40,7 +40,7 @@ export function LoginScreen() {
           const resUser = await getCurrentUserWithToken(res.data.token);
           Cookies.set('user', JSON.stringify(resUser.data));
           form.reset();
-          window.location.href = resUser.data.role === ROLE.ADMIN ? '/admin' : '/';
+          window.location.href = '/';
         } catch (error) {
           Cookies.remove('auth_token');
           Cookies.remove('user');
@@ -57,14 +57,18 @@ export function LoginScreen() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex justify-center gap-2 md:justify-start">
-          <a href="/" className="flex items-center gap-2 font-medium">
-            <img
-              src="/images/tree-adopt-logo.png"
-              alt="Logo"
-              className="h-16 w-full object-contain rounded-full"
-            />
-          </a>
+        <div className="flex items-center mb-8">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="inline-block p-3 bg-gradient-to-r from-muted to-accent rounded-2xl mr-4">
+              <Leaf className="h-8 w-8 text-primary" />
+            </div>
+            <h1 className="text-3xl font-black leading-tight">
+              <span className="bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent">
+                SUSTAINABLE
+              </span>
+              <span className="text-foreground ml-2">FOREST</span>
+            </h1>
+          </Link>
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
@@ -145,13 +149,6 @@ export function LoginScreen() {
                     </Button>
                   )}
                 </form.Subscribe>
-              </div>
-              <div className="text-center text-sm">
-                {/* Don&apos;t have an account?{' '} */}
-                {'Belum memiliki akun? '}
-                <a href="/register" className="underline underline-offset-4">
-                  Daftar sekarang
-                </a>
               </div>
             </form>
           </div>

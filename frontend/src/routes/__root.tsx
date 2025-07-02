@@ -1,23 +1,12 @@
 import { QueryClient } from '@tanstack/react-query';
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
-import {
-  Database,
-  HomeIcon,
-  Info,
-  LogOut,
-  LucideIcon,
-  Map,
-  MoreHorizontal,
-  SettingsIcon,
-  Users,
-} from 'lucide-react';
+import { Database, HomeIcon, Info, LogOut, LucideIcon, Map, SettingsIcon } from 'lucide-react';
 
 import { AppSidebar } from '@/components/app-sidebar';
 import { SiteHeader } from '@/components/site-header';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/sonner';
 import { PERMISSION } from '@/enum/permission.enum';
-import { ROLE } from '@/enum/role.enum';
 import { useUserStore } from '@/lib/stores/userStore';
 import { checkPermission } from '@/lib/utils/permissions';
 
@@ -33,78 +22,13 @@ const Root = () => {
       title: string;
       url: string;
       icon?: LucideIcon;
-    }[];
-  }[] = [
-    {
-      title: 'Beranda',
-      icon: HomeIcon,
-      url: '/',
-    },
-    {
-      title: 'Tentang Kami',
-      icon: Info,
-      items: [
-        { title: 'Apa itu Adopsi Pohon', url: '/tentang-kami/apa-itu-adopsi-pohon' },
-        { title: 'Kelompok komunitas', url: '/tentang-kami/kelompok-komunitas' },
-        { title: 'Laporan-laporan', url: '/tentang-kami/laporan-laporan' },
-      ],
-    },
-    {
-      title: 'Program Kami',
-      icon: Users,
-      items: [
-        { title: 'Adopsi Pohon', url: '/program-kami/adopsi-pohon' },
-        { title: 'Pemberdayaan Masyarakat', url: '/program-kami/pemberdayaan-masyarakat' },
-        { title: 'Patroli & Geo-Tagging', url: '/program-kami/patroli-&-geo-tagging' },
-        { title: 'Monitor Biodiversity', url: '/program-kami/monitor-biodiversity' },
-      ],
-    },
-    {
-      title: 'Data',
-      icon: Database,
-      items: [
-        { title: 'Pohon', url: '/data/pohon' },
-        { title: 'Adopter', url: '/data/adopter' },
-      ],
-    },
-    {
-      title: 'Pemetaan',
-      icon: Map,
-      url: '/pemetaan',
-    },
-    {
-      title: 'Lain-lain',
-      icon: MoreHorizontal,
-      items: [
-        { title: 'FAQ', url: '/lain/faq' },
-        { title: 'Kontak Kami', url: '/lain/kontak' },
-      ],
-    },
-  ];
-
-  const navSecondary = [
-    {
-      title: 'Logout',
-      url: '/profile',
-      icon: LogOut,
-    },
-  ];
-
-  const navMainAdmin: {
-    title: string;
-    url?: string;
-    icon?: LucideIcon;
-    items?: {
-      title: string;
-      url: string;
-      icon?: LucideIcon;
       hide?: boolean;
     }[];
   }[] = [
     {
       title: 'Dashboard',
       icon: HomeIcon,
-      url: '/admin',
+      url: '/',
     },
     {
       title: 'Konfigurasi',
@@ -112,12 +36,12 @@ const Root = () => {
       items: [
         {
           title: 'User',
-          url: '/admin/config/user',
+          url: '/config/user',
           hide: !permissions.includes(PERMISSION.USER_MANAGEMENT_VIEW),
         },
         {
           title: 'Role Permission',
-          url: '/admin/config/role-permission',
+          url: '/config/role-permission',
           hide: !permissions.includes(PERMISSION.ROLE_PERMISSION_MANAGEMENT_VIEW),
         },
       ],
@@ -128,17 +52,17 @@ const Root = () => {
       items: [
         {
           title: 'Pohon',
-          url: '/admin/master/pohon',
+          url: '/master/pohon',
           hide: !permissions.includes(PERMISSION.MASTER_TREE_VIEW),
         },
         {
           title: 'Pohon Lokal',
-          url: '/admin/master/pohon-lokal',
+          url: '/master/pohon-lokal',
           hide: !permissions.includes(PERMISSION.MASTER_TREE_VIEW),
         },
         {
           title: 'Kode Patok Batas',
-          url: '/admin/master/kode-patok-batas',
+          url: '/master/kode-patok-batas',
           hide: !permissions.includes(PERMISSION.MASTER_BOUNDARY_MARKER_CODE_VIEW),
         },
       ],
@@ -147,16 +71,16 @@ const Root = () => {
       title: 'Tentang Kami',
       icon: Info,
       items: [
-        // { title: 'Apa itu Adopsi Pohon', url: '/admin/tentang-kami/apa-itu-adopsi-pohon' },
+        // { title: 'Apa itu Adopsi Pohon', url: '/tentang-kami/apa-itu-adopsi-pohon' },
         {
           title: 'Kelompok komunitas',
-          url: '/admin/tentang-kami/kelompok-komunitas',
+          url: '/tentang-kami/kelompok-komunitas',
           hide: !checkPermission(permissions, [
             PERMISSION.COMUNITY_GROUP_VIEW_LEVEL_GLOBAL,
             PERMISSION.COMUNITY_GROUP_VIEW_LEVEL_GROUP,
           ]),
         },
-        // { title: 'Laporan-laporan', url: '/admin/tentang-kami/laporan-laporan' },
+        // { title: 'Laporan-laporan', url: '/tentang-kami/laporan-laporan' },
       ],
     },
     {
@@ -165,12 +89,12 @@ const Root = () => {
       items: [
         {
           title: 'Pohon',
-          url: '/admin/data/pohon',
+          url: '/data/pohon',
           hide: !permissions.includes(PERMISSION.TREE_VIEW),
         },
         {
           title: 'Patok Batas',
-          url: '/admin/data/patok-batas',
+          url: '/data/patok-batas',
           hide: !permissions.includes(PERMISSION.BOUNDARY_MARKER_VIEW),
         },
       ],
@@ -178,23 +102,20 @@ const Root = () => {
     {
       title: 'Pemeteaan',
       icon: Map,
-      url: '/admin/pemetaan',
+      url: '/pemetaan',
     },
   ];
 
-  const navSecondaryAdmin = [
+  const navSecondary = [
     {
       title: 'Logout',
-      url: '/admin/profile',
+      url: '/profile',
       icon: LogOut,
     },
   ];
   return (
     <SidebarProvider>
-      {user?.role === ROLE.ADMIN && (
-        <AppSidebar navItem={navMainAdmin} navSecondary={navSecondaryAdmin} />
-      )}
-      {user?.role === ROLE.USER && <AppSidebar navItem={navMain} navSecondary={navSecondary} />}
+      {user && <AppSidebar navItem={navMain} navSecondary={navSecondary} />}
       <main className="flex flex-col w-full flex-1 h-screen overflow-hidden">
         {user && (
           <div className="sticky top-0 bg-background z-20">

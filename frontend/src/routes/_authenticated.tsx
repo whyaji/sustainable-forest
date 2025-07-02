@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import Cookies from 'js-cookie';
 
-import { ROLE } from '@/enum/role.enum';
 import { OnboardingScreen } from '@/features/onboarding/screen/OnboardingScreen';
 import { userQueryOptions } from '@/lib/api/authApi';
 import { useUserStore } from '@/lib/stores/userStore';
@@ -19,14 +18,6 @@ const Component = () => {
   }
 
   setUser(user.data);
-
-  if (user.data.role === ROLE.ADMIN) {
-    window.location.replace('/admin');
-  }
-
-  if (user.data.role !== ROLE.USER && user.data.role !== ROLE.ADMIN) {
-    window.location.replace('/not-found');
-  }
 
   return <Outlet />;
 };

@@ -1,5 +1,5 @@
 import { DetailGroupScreenComponent } from '@/components/screen/detail-group-screen-component';
-import { Route } from '@/routes/_authenticated/tentang-kami/kelompok-komunitas/$kelompokKomunitasName';
+import { Route } from '@/routes/_authenticated/tentang-kami/kelompok-komunitas/$kelompokKomunitasId';
 import { KelompokKomunitasType } from '@/types/kelompokKomunitas.type';
 
 export function DetailKelompokKomunitasScreen() {
@@ -10,5 +10,10 @@ export function DetailKelompokKomunitasScreen() {
     return <div>Kelompok Komunitas tidak ditemukan.</div>;
   }
 
-  return <DetailGroupScreenComponent kelompokKomunitas={kelompokKomunitas} />;
+  return (
+    <DetailGroupScreenComponent
+      kelompokKomunitas={kelompokKomunitas}
+      allPhotosRoute={`/tentang-kami/kelompok-komunitas/${kelompokKomunitas.id}/all-photos`}
+    />
+  );
 }

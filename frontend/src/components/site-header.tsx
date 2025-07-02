@@ -27,7 +27,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
-import { ROLE } from '@/enum/role.enum';
 import { useUserStore } from '@/lib/stores/userStore';
 
 export function SiteHeader() {
@@ -35,8 +34,8 @@ export function SiteHeader() {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
 
-  const homeUrl = user?.role === ROLE.ADMIN ? '/admin' : '/';
-  const profileUrl = user?.role === ROLE.ADMIN ? '/admin/profile' : '/profile';
+  const homeUrl = '/';
+  const profileUrl = '/profile';
 
   const pathSegments = pathname.split('/').filter(Boolean);
 

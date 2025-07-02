@@ -1,22 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { DropdownComunityGroupList, DropdownMasterTreeList } from '@/components/dropdown';
-import { InfiniteScrollListMobile } from '@/components/infinite-scroll-list-mobile';
 import { TableData } from '@/components/table-data';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { FILTER_NAME } from '@/enum/filter-name.enum';
 import { usePaginationFilter } from '@/hooks/use-pagination-filter';
 import { getTrees } from '@/lib/api/treeApi';
 import { useUserStore } from '@/lib/stores/userStore';
 import { TreeType } from '@/types/tree.type';
 
-import { PohonTableAdopter } from '../components/pohon-table-adopter/PohonTableAdopter';
-import { TreeMobileCard } from '../components/tree-mobile-card/TreeMobileCard';
+import { DialogAssignMasterTree } from '../components/dialog-assign-master-tree/DialogAssignMasterTree';
+import { PohonTable } from '../components/pohon-table/PohonTable';
 
 export function PohonListScreen() {
   const user = useUserStore((state) => state.user);
   const {
-    data: paginationData,
-    setData,
     setPage,
     setLimit,
     tempSearch,
@@ -24,7 +23,7 @@ export function PohonListScreen() {
     paginationParams,
     tempFilterState,
     handleApplyFilter,
-  } = usePaginationFilter<TreeType>(
+  } = usePaginationFilter(
     {
       withData:
         'masterTreeId,masterLocalTree,kelompokKomunitasId,adopter,adopter.userId,survey,survey.userId',
@@ -35,7 +34,7 @@ export function PohonListScreen() {
     [FILTER_NAME.MASTER_TREE, FILTER_NAME.GROUP]
   );
 
-  const { isPending, error, data } = useQuery({
+  const { isPending, error, data, refetch } = useQuery({
     queryKey: ['get-tree', paginationParams],
     queryFn: () => getTrees(paginationParams),
   });
@@ -54,7 +53,16 @@ export function PohonListScreen() {
       totalPage={totalPage}
       limit={paginationParams.limit}
       setLimit={setLimit}
+      addUrl="/data/pohon/add"
       elementsHeader={[
+        <Dialog key="dialog-assign-master-tree">
+          <DialogTrigger asChild>
+            <Button className="w-full" variant="default">
+              Set Master Pohon Otomatis
+            </Button>
+          </DialogTrigger>
+          <DialogAssignMasterTree refetchList={refetch} />
+        </Dialog>,
         <DropdownMasterTreeList
           value={tempFilterState[FILTER_NAME.MASTER_TREE]}
           setValue={(value) => {
@@ -72,19 +80,7 @@ export function PohonListScreen() {
           key="group-dropdown"
         />,
       ]}
-      table={<PohonTableAdopter data={data?.data as TreeType[]} isPending={isPending} />}
-      infiniteScrollMobile={
-        <InfiniteScrollListMobile<TreeType>
-          responseData={data}
-          data={paginationData}
-          setData={setData}
-          setPage={setPage}
-          totalData={data?.total}
-          refreshing={isPending}
-          isError={!!error}
-          renderItem={(item) => <TreeMobileCard tree={item} />}
-        />
-      }
+      table={<PohonTable data={data?.data as TreeType[]} isPending={isPending} refetch={refetch} />}
     />
   );
 }
