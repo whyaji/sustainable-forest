@@ -26,7 +26,7 @@ export function PohonListScreen() {
   } = usePaginationFilter(
     {
       withData:
-        'masterTreeId,masterLocalTree,kelompokKomunitasId,adopter,adopter.userId,survey,survey.userId',
+        'masterTreeId,masterLocalTree,kelompokKomunitasId,adopter,adopter.adopterId,survey,survey.userId',
       sortBy: 'id',
       order: 'desc',
       filter: user?.groupId ? `kelompokKomunitasId:${user.groupId}:eq` : undefined,

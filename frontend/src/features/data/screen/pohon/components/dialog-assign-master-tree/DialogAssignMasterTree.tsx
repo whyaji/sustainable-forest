@@ -27,7 +27,7 @@ export function DialogAssignMasterTree({ refetchList }: { refetchList?: () => vo
   const { setPage, setLimit, tempSearch, setTempSearch, paginationParams } = usePaginationFilter({
     limit: 5,
     withData:
-      'masterTreeId,masterLocalTree,kelompokKomunitasId,adopter,adopter.userId,survey,survey.userId',
+      'masterTreeId,masterLocalTree,kelompokKomunitasId,adopter,adopter.adopterId,survey,survey.userId',
     sortBy: 'id',
     order: 'desc',
     filter: user?.groupId

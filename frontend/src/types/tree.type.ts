@@ -1,4 +1,4 @@
-import { Tree } from '@server/routes/tree';
+import { Tree } from '@server/app/handlers/treeHandler';
 
 import { AdoptHistoryType } from './adoptHistory.type';
 import { KelompokKomunitasType } from './kelompokKomunitas.type';

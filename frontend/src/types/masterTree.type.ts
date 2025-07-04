@@ -1,4 +1,4 @@
-import { MasterLocalTree, MasterTree } from '@server/routes/masterTree';
+import { MasterLocalTree, MasterTree } from '@server/app/handlers/masterTreeHandler';
 
 export type MasterLocalTreeType = MasterLocalTree & {
   masterTree?: MasterTree | null;

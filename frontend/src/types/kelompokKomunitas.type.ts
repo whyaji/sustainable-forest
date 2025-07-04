@@ -1,4 +1,7 @@
-import { GroupCoordinateArea, KelompokKomunitas } from '@server/routes/kelompokkomunitas';
+import {
+  GroupCoordinateArea,
+  KelompokKomunitas,
+} from '@server/app/handlers/kelompokKomunitasHandler';
 
 import { GroupActivityType } from './groupActivity.type';
 import { TreeType } from './tree.type';

@@ -19,7 +19,6 @@ export const userSchema = mysqlTable(
     email: varchar('email', { length: 255 }).notNull().unique(),
     password: varchar('password', { length: 255 }).notNull(),
     avatar: varchar('avatar', { length: 255 }),
-    role: int('role').default(1), // 0 = admin, 1 = user
     groupId: bigint('group_id', { mode: 'number', unsigned: true }).references(
       () => kelompokKomunitasSchema.id
     ),
@@ -30,6 +29,18 @@ export const userSchema = mysqlTable(
   },
   (table) => [index('group_id_idx_users').on(table.groupId)]
 );
+
+export const treeAdopterSchema = mysqlTable('tree_adopters', {
+  id: bigint('id', { mode: 'number', unsigned: true }).autoincrement().notNull().primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  password: varchar('password', { length: 255 }).notNull(),
+  phone: varchar('phone', { length: 20 }),
+  avatar: varchar('avatar', { length: 255 }),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+  deletedAt: timestamp('deleted_at'),
+});
 
 export const rolesSchema = mysqlTable('roles', {
   id: bigint('id', { mode: 'number', unsigned: true }).autoincrement().notNull().primaryKey(),
@@ -228,20 +239,29 @@ export const treeSchema = mysqlTable(
   (table) => [index('kelompok_komunitas_id_idx_tree').on(table.kelompokKomunitasId)]
 );
 
-export const adoptHistorySchema = mysqlTable('adopt_history', {
-  id: bigint('id', { mode: 'number', unsigned: true }).autoincrement().notNull().primaryKey(),
-  treeId: bigint('tree_id', { mode: 'number', unsigned: true })
-    .notNull()
-    .references(() => treeSchema.id),
-  userId: bigint('user_id', { mode: 'number', unsigned: true })
-    .notNull()
-    .references(() => userSchema.id),
-  startDate: varchar('adopted_at', { length: 255 }).notNull(),
-  endDate: varchar('end_date', { length: 255 }).notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-  deletedAt: timestamp('deleted_at'),
-});
+export const adoptHistorySchema = mysqlTable(
+  'adopt_history',
+  {
+    id: bigint('id', { mode: 'number', unsigned: true }).autoincrement().notNull().primaryKey(),
+    treeId: bigint('tree_id', { mode: 'number', unsigned: true })
+      .notNull()
+      .references(() => treeSchema.id),
+    adopterId: bigint('adopter_id', { mode: 'number', unsigned: true })
+      .notNull()
+      .references(() => treeAdopterSchema.id),
+    startDate: varchar('adopted_at', { length: 255 }).notNull(),
+    endDate: varchar('end_date', { length: 255 }).notNull(),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+    deletedAt: timestamp('deleted_at'),
+  },
+  (table) => {
+    return [
+      index('tree_id_idx_adopt_history').on(table.treeId),
+      index('adopter_id_idx_adopt_history').on(table.adopterId),
+    ];
+  }
+);
 
 export const surveyHistorySchema = mysqlTable(
   'survey_history',

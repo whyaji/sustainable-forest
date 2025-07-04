@@ -1,3 +1,3 @@
-import { GroupActivity } from '@server/routes/groupActivity';
+import { GroupActivity } from '@server/app/handlers/groupActivityHandler';
 
 export type GroupActivityType = GroupActivity;

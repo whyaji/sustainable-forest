@@ -63,7 +63,6 @@ export const FormUser: FC<{
       name: user?.name ?? '',
       email: user?.email ?? '',
       password: '',
-      role: user ? String(user.role) : '',
       groupId: user?.groupId ? String(user.groupId) : loggedInUserGroupId,
       rolesIds: user?.roles?.map((role) => String(role.id)) ?? [],
     },
@@ -71,7 +70,6 @@ export const FormUser: FC<{
       const dataValue = {
         name: value.name,
         email: value.email,
-        role: Number(value.role),
         groupId: value.groupId ? Number(value.groupId) : undefined,
         password: value.password,
       };
@@ -107,15 +105,6 @@ export const FormUser: FC<{
     { name: 'name', label: 'Name', type: 'text', required: true },
     { name: 'email', label: 'Email', type: 'text', required: true },
     { name: 'password', label: 'Password', type: 'password', required: user ? false : true },
-    {
-      name: 'role',
-      label: 'Type',
-      type: 'dropdown',
-      data: [
-        { label: 'Admin', value: '0' },
-        { label: 'User', value: '1' },
-      ],
-    },
     {
       name: 'groupId',
       label: 'Kelompok Komunitas',

@@ -1,4 +1,4 @@
-import { AdoptHistory } from '@server/routes/adoptHistory';
+import { AdoptHistory } from '@server/app/handlers/adoptHistoryHandler';
 
 import { TreeType } from './tree.type';
 import { UserType } from './user.type';

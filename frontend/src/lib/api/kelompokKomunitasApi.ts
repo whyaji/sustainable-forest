@@ -1,7 +1,7 @@
-import { KelompokKomunitas } from '@server/routes/kelompokkomunitas';
 import Cookies from 'js-cookie';
 
 import { PaginationParams } from '@/interface/pagination.interface';
+import { KelompokKomunitasType } from '@/types/kelompokKomunitas.type';
 
 import { api, baseApiUrl } from './api';
 
@@ -53,7 +53,7 @@ export async function getKelompokKomunitasById(id: string, withData?: string) {
     ...(withData ? { query: { with: withData } } : {}),
   });
   if (!res.ok) throw new Error(res.statusText);
-  return res.json() as Promise<{ data: KelompokKomunitas }>;
+  return res.json() as Promise<{ data: KelompokKomunitasType }>;
 }
 
 export async function getKelompokKomunitasByName(name: string, withData?: string) {
@@ -62,7 +62,7 @@ export async function getKelompokKomunitasByName(name: string, withData?: string
     ...(withData ? { query: { with: withData } } : {}),
   });
   if (!res.ok) throw new Error(res.statusText);
-  return res.json() as Promise<{ data: KelompokKomunitas }>;
+  return res.json() as Promise<{ data: KelompokKomunitasType }>;
 }
 
 export async function updateKelompokKomunitas(id: number, formData: FormData) {

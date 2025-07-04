@@ -18,7 +18,7 @@ import {
 } from './relation.js';
 import { getSearchConditions } from './search.js';
 
-export async function getPaginationData({
+export async function getPaginationData<T>({
   c,
   table,
   searchBy,
@@ -46,7 +46,7 @@ export async function getPaginationData({
     return c.json({ error: 'Invalid order' }, 400);
   }
 
-  const returnData = await getPaginationDataObject({
+  const returnData = await getPaginationDataObject<T>({
     c,
     table,
     searchBy,
@@ -59,7 +59,7 @@ export async function getPaginationData({
   return c.json(returnData);
 }
 
-export async function getPaginationDataObject({
+export async function getPaginationDataObject<T>({
   c,
   table,
   searchBy,
@@ -135,7 +135,7 @@ export async function getPaginationDataObject({
   const totalData = await db.select({ count: count() }).from(table).where(whereClause);
   const rawData = await query;
 
-  let data =
+  let data: T[] =
     withArray && relations && oneToOneRelation.length > 0
       ? reformatMainKey(rawData, withArray)
       : rawData;
