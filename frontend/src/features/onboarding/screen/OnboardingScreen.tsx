@@ -207,7 +207,7 @@ export function OnboardingScreen() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {features.map((feature, index) => (
               <div
-                key={index}
+                key={feature.title}
                 className="group relative"
                 style={{
                   transform: `translateY(${Math.sin(scrollY * 0.01 + index) * 10}px)`,
@@ -237,7 +237,7 @@ export function OnboardingScreen() {
       </section>
 
       {/* Partners Section - Responsive */}
-      <section className="py-16 md:py-20 bg-primary/5">
+      <section className="py-16 md:py-20 bg-green-600/5 relative z-10">
         <div className="container mx-auto px-4">
           <div>
             <div className="flex flex-col gap-6 md:gap-8">
@@ -250,16 +250,19 @@ export function OnboardingScreen() {
                 </p>
               </div>
               <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 lg:gap-8 mt-4 md:mt-8">
-                {partnerItems.map((item, index) => {
+                {partnerItems.map((item) => {
                   return (
                     <div
-                      key={index}
-                      className="w-20 md:w-28 lg:w-32 xl:w-40 flex flex-col items-center gap-2 group">
+                      key={item.alt}
+                      className="w-20 md:w-28 lg:w-32 xl:w-40 flex flex-col items-center gap-2 group cursor-pointer">
                       <div className="overflow-hidden rounded-lg bg-white p-2 md:p-3 lg:p-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
                         <img
                           src={item.src}
                           alt={item.alt}
                           className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
                         />
                       </div>
                     </div>
