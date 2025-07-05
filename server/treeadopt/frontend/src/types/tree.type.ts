@@ -1,4 +1,5 @@
 import { Tree } from '@parentServer/app/handlers/treeHandler';
+
 import { AdoptHistoryType } from './adoptHistory.type';
 import { KelompokKomunitasType } from './kelompokKomunitas.type';
 import { MasterLocalTreeType, MasterTreeType } from './masterTree.type';

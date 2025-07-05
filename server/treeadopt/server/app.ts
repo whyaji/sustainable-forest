@@ -9,6 +9,7 @@ import { kelompokKomunitasRoute } from './routes/kelompokKomunitas.js';
 import { masterTreeRoute } from './routes/masterTree.js';
 import { surveyHistoryRoute } from './routes/surveyHistory.js';
 import { treeRoute } from './routes/tree.js';
+import { wishtreeRoute } from './routes/wishtree.js';
 
 const app = new Hono();
 
@@ -23,7 +24,8 @@ const apiRoutes = app
   .route('/survey-history', surveyHistoryRoute)
   .route('/adopt-history', adoptHistoryRoute)
   .route('/master-tree', masterTreeRoute)
-  .route('/group-activity', groupActivityRoute);
+  .route('/group-activity', groupActivityRoute)
+  .route('/wishtree', wishtreeRoute);
 
 // Serve files from public directory
 app.get('/uploads/*', serveStatic({ root: '../public' }));

@@ -18,6 +18,7 @@ import { Route as TentangKamiIndexRouteImport } from './routes/tentang-kami/inde
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as TentangKamiApaItuAdopsiPohonIndexRouteImport } from './routes/tentang-kami/apa-itu-adopsi-pohon/index'
+import { Route as AuthenticatedWishtreeIndexRouteImport } from './routes/_authenticated/wishtree/index'
 import { Route as AuthenticatedProgramKamiIndexRouteImport } from './routes/_authenticated/program-kami/index'
 import { Route as AuthenticatedPemetaanIndexRouteImport } from './routes/_authenticated/pemetaan/index'
 import { Route as AuthenticatedTentangKamiKelompokKomunitasIndexRouteImport } from './routes/_authenticated/tentang-kami/kelompok-komunitas/index'
@@ -73,6 +74,12 @@ const TentangKamiApaItuAdopsiPohonIndexRoute =
     id: '/tentang-kami/apa-itu-adopsi-pohon/',
     path: '/tentang-kami/apa-itu-adopsi-pohon/',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedWishtreeIndexRoute =
+  AuthenticatedWishtreeIndexRouteImport.update({
+    id: '/wishtree/',
+    path: '/wishtree/',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedProgramKamiIndexRoute =
   AuthenticatedProgramKamiIndexRouteImport.update({
@@ -147,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/tentang-kami': typeof TentangKamiIndexRoute
   '/pemetaan': typeof AuthenticatedPemetaanIndexRoute
   '/program-kami': typeof AuthenticatedProgramKamiIndexRoute
+  '/wishtree': typeof AuthenticatedWishtreeIndexRoute
   '/tentang-kami/apa-itu-adopsi-pohon': typeof TentangKamiApaItuAdopsiPohonIndexRoute
   '/tentang-kami/kelompok-komunitas/$kelompokKomunitasName': typeof AuthenticatedTentangKamiKelompokKomunitasKelompokKomunitasNameRoute
   '/data/pohon': typeof AuthenticatedDataPohonIndexRoute
@@ -167,6 +175,7 @@ export interface FileRoutesByTo {
   '/tentang-kami': typeof TentangKamiIndexRoute
   '/pemetaan': typeof AuthenticatedPemetaanIndexRoute
   '/program-kami': typeof AuthenticatedProgramKamiIndexRoute
+  '/wishtree': typeof AuthenticatedWishtreeIndexRoute
   '/tentang-kami/apa-itu-adopsi-pohon': typeof TentangKamiApaItuAdopsiPohonIndexRoute
   '/tentang-kami/kelompok-komunitas/$kelompokKomunitasName': typeof AuthenticatedTentangKamiKelompokKomunitasKelompokKomunitasNameRoute
   '/data/pohon': typeof AuthenticatedDataPohonIndexRoute
@@ -189,6 +198,7 @@ export interface FileRoutesById {
   '/tentang-kami/': typeof TentangKamiIndexRoute
   '/_authenticated/pemetaan/': typeof AuthenticatedPemetaanIndexRoute
   '/_authenticated/program-kami/': typeof AuthenticatedProgramKamiIndexRoute
+  '/_authenticated/wishtree/': typeof AuthenticatedWishtreeIndexRoute
   '/tentang-kami/apa-itu-adopsi-pohon/': typeof TentangKamiApaItuAdopsiPohonIndexRoute
   '/_authenticated/tentang-kami/kelompok-komunitas/$kelompokKomunitasName': typeof AuthenticatedTentangKamiKelompokKomunitasKelompokKomunitasNameRoute
   '/_authenticated/data/pohon/': typeof AuthenticatedDataPohonIndexRoute
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/tentang-kami'
     | '/pemetaan'
     | '/program-kami'
+    | '/wishtree'
     | '/tentang-kami/apa-itu-adopsi-pohon'
     | '/tentang-kami/kelompok-komunitas/$kelompokKomunitasName'
     | '/data/pohon'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/tentang-kami'
     | '/pemetaan'
     | '/program-kami'
+    | '/wishtree'
     | '/tentang-kami/apa-itu-adopsi-pohon'
     | '/tentang-kami/kelompok-komunitas/$kelompokKomunitasName'
     | '/data/pohon'
@@ -252,6 +264,7 @@ export interface FileRouteTypes {
     | '/tentang-kami/'
     | '/_authenticated/pemetaan/'
     | '/_authenticated/program-kami/'
+    | '/_authenticated/wishtree/'
     | '/tentang-kami/apa-itu-adopsi-pohon/'
     | '/_authenticated/tentang-kami/kelompok-komunitas/$kelompokKomunitasName'
     | '/_authenticated/data/pohon/'
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TentangKamiApaItuAdopsiPohonIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/wishtree/': {
+      id: '/_authenticated/wishtree/'
+      path: '/wishtree'
+      fullPath: '/wishtree'
+      preLoaderRoute: typeof AuthenticatedWishtreeIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/program-kami/': {
       id: '/_authenticated/program-kami/'
       path: '/program-kami'
@@ -416,6 +436,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedPemetaanIndexRoute: typeof AuthenticatedPemetaanIndexRoute
   AuthenticatedProgramKamiIndexRoute: typeof AuthenticatedProgramKamiIndexRoute
+  AuthenticatedWishtreeIndexRoute: typeof AuthenticatedWishtreeIndexRoute
   AuthenticatedTentangKamiKelompokKomunitasKelompokKomunitasNameRoute: typeof AuthenticatedTentangKamiKelompokKomunitasKelompokKomunitasNameRoute
   AuthenticatedDataPohonIndexRoute: typeof AuthenticatedDataPohonIndexRoute
   AuthenticatedProgramKamiAdopsiPohonIndexRoute: typeof AuthenticatedProgramKamiAdopsiPohonIndexRoute
@@ -431,6 +452,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedPemetaanIndexRoute: AuthenticatedPemetaanIndexRoute,
   AuthenticatedProgramKamiIndexRoute: AuthenticatedProgramKamiIndexRoute,
+  AuthenticatedWishtreeIndexRoute: AuthenticatedWishtreeIndexRoute,
   AuthenticatedTentangKamiKelompokKomunitasKelompokKomunitasNameRoute:
     AuthenticatedTentangKamiKelompokKomunitasKelompokKomunitasNameRoute,
   AuthenticatedDataPohonIndexRoute: AuthenticatedDataPohonIndexRoute,

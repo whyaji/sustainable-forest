@@ -26,6 +26,7 @@ export async function getPaginationData<T>({
   primaryKey = 'id',
   selectObject,
   withData = null,
+  filter = null,
 }: {
   c: Context<object, any, BlankInput>;
   table: MySqlTableWithColumns<any>;
@@ -34,6 +35,7 @@ export async function getPaginationData<T>({
   primaryKey?: string;
   selectObject?: Record<string, any>;
   withData?: string | null;
+  filter?: string | null;
 }) {
   const sortBy = c.req.query('sortBy') ?? 'createdAt';
   const order = c.req.query('order') ?? 'desc';
@@ -54,6 +56,7 @@ export async function getPaginationData<T>({
     primaryKey,
     selectObject,
     withData,
+    filter,
   });
 
   return c.json(returnData);
@@ -67,6 +70,7 @@ export async function getPaginationDataObject<T>({
   primaryKey = 'id',
   selectObject,
   withData,
+  filter,
 }: {
   c: Context<object, any, BlankInput>;
   table: MySqlTableWithColumns<any>;
@@ -75,6 +79,7 @@ export async function getPaginationDataObject<T>({
   primaryKey?: string;
   selectObject?: Record<string, any>;
   withData?: string | null;
+  filter?: string | null;
 }) {
   const search = c.req.query('search') ?? '';
   const page = parseInt(c.req.query('page') ?? '1');
@@ -94,7 +99,9 @@ export async function getPaginationDataObject<T>({
       }, {} as Record<string, any>)
     : null;
 
-  const filters = parseFilterQuery(c.req.query('filter') ?? null);
+  const filters = parseFilterQuery(
+    c.req.query('filter') ? c.req.query('filter') + `${filter ? ';' + filter : ''}` : filter ?? null
+  );
   const conditions = getAllConditions(filters, table);
   const whereClause = and(
     ...(search ? [or(...getSearchConditions(search, reqSearchBy, table))] : []),

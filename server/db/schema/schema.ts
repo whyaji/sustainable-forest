@@ -405,3 +405,23 @@ export const checkBoundaryMarkerHistorySchema = mysqlTable(
     index('boundary_marker_id_idx_check_boundary_     marker_history').on(table.boundaryMarkerId),
   ]
 );
+
+export const wishtreeSchema = mysqlTable(
+  'wishtree',
+  {
+    id: bigint('id', { mode: 'number', unsigned: true }).autoincrement().notNull().primaryKey(),
+    adopterId: bigint('adopter_id', { mode: 'number', unsigned: true })
+      .notNull()
+      .references(() => treeAdopterSchema.id),
+    treeId: bigint('tree_id', { mode: 'number', unsigned: true })
+      .notNull()
+      .references(() => treeSchema.id),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+    deletedAt: timestamp('deleted_at'),
+  },
+  (table) => [
+    index('adopter_id_idx_wishtree').on(table.adopterId),
+    index('tree_id_idx_wishtree').on(table.treeId),
+  ]
+);

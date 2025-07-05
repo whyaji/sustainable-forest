@@ -5,6 +5,7 @@ import {
   HomeIcon,
   LogOutIcon,
   MoreVerticalIcon,
+  TreePine,
   UserCircleIcon,
 } from 'lucide-react';
 
@@ -27,16 +28,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
-import { ROLE } from '@/enum/role.enum';
 import { useUserStore } from '@/lib/stores/userStore';
+
+import { Button } from './ui/button';
 
 export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
 
-  const homeUrl = user?.role === ROLE.ADMIN ? '/admin' : '/';
-  const profileUrl = user?.role === ROLE.ADMIN ? '/admin/profile' : '/profile';
+  const homeUrl = '/';
+  const profileUrl = '/profile';
 
   const pathSegments = pathname.split('/').filter(Boolean);
 
@@ -98,72 +100,83 @@ export function SiteHeader() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      {/* Avatar Account */}
+
+      {/* Account Dropdown - Only show when user is authenticated */}
       {user && (
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton
-                size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground px-2 sm:px-3">
-                <Avatar className="h-8 w-8 rounded-lg grayscale">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">
-                    {user.name ? user.name[0] : 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                {/* Hide name/email on mobile, show on sm+ */}
-                <div className="hidden sm:grid flex-1 text-left text-sm leading-tight ml-2">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">{user.email}</span>
-                </div>
-                <MoreVerticalIcon className="ml-auto size-4" />
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-              side={'bottom'}
-              align="end"
-              sideOffset={4}>
-              <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={user.avatar ?? '/avatars/shadcn.jpg'} alt={user.name} />
+        <>
+          {/* WishTree Button - Show for all users (authenticated or not) */}
+          <div className="flex items-center">
+            <Link to="/wishtree" title="Add Tree to WishTree">
+              <Button variant="outline">
+                <TreePine className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground px-2 sm:px-3">
+                  <Avatar className="h-8 w-8 rounded-lg grayscale">
+                    <AvatarImage src={user.avatar} alt={user.name} />
                     <AvatarFallback className="rounded-lg">
                       {user.name ? user.name[0] : 'U'}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
+                  {/* Hide name/email on mobile, show on sm+ */}
+                  <div className="hidden sm:grid flex-1 text-left text-sm leading-tight ml-2">
                     <span className="truncate font-medium">{user.name}</span>
                     <span className="truncate text-xs text-muted-foreground">{user.email}</span>
                   </div>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <Link to={profileUrl} className="w-full">
+                  <MoreVerticalIcon className="ml-auto size-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                side={'bottom'}
+                align="end"
+                sideOffset={4}>
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarImage src={user.avatar ?? '/avatars/shadcn.jpg'} alt={user.name} />
+                      <AvatarFallback className="rounded-lg">
+                        {user.name ? user.name[0] : 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-medium">{user.name}</span>
+                      <span className="truncate text-xs text-muted-foreground">{user.email}</span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <Link to={profileUrl} className="w-full">
+                    <DropdownMenuItem>
+                      <UserCircleIcon />
+                      Account
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem>
-                    <UserCircleIcon />
-                    Account
+                    <CreditCardIcon />
+                    Billing
                   </DropdownMenuItem>
-                </Link>
+                  <DropdownMenuItem>
+                    <BellIcon />
+                    Notifications
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <CreditCardIcon />
-                  Billing
+                  <LogOutIcon />
+                  Log out
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <BellIcon />
-                  Notifications
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOutIcon />
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </>
       )}
     </header>
   );
