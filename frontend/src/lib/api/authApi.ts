@@ -30,7 +30,7 @@ export const userQueryOptions = queryOptions({
 });
 
 export const login = async (email: string, password: string, recaptchaToken: string) => {
-  const res = await api.login.$post({
+  const res = await api['login-with-recaptcha'].$post({
     json: { email, password, recaptchaToken },
   });
   if (!res.ok)

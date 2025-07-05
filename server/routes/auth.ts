@@ -44,7 +44,67 @@ const loginWithRecaptchaSchema = loginSchema.extend({
 export type User = z.infer<typeof userSchemaZod>;
 
 export const authRoute = new Hono()
-  .post('/login', zValidator('json', loginWithRecaptchaSchema), async (c) => {
+  .post('/login', zValidator('json', loginSchema), async (c) => {
+    const { email, password } = c.req.valid('json');
+
+    try {
+      // Find user by email
+      const user = await db.select().from(userSchema).where(eq(userSchema.email, email));
+
+      if (user.length === 0) {
+        return c.json({ message: 'Invalid email or password.' }, 401);
+      }
+
+      // Verify password
+      const hashedPassword = await bcrypt.hash(password, env.HASH_SALT ?? 'salt');
+      console.log('Hashed Password:', hashedPassword);
+      console.log('Stored Password:', user[0].password);
+      if (hashedPassword !== user[0].password) {
+        return c.json({ message: 'Invalid email or password.' }, 401);
+      }
+
+      // Calculate token expiration (e.g., 24 hours from now)
+      const tokenExpiredAt = Math.floor(Date.now() / 1000) + 24 * 60 * 60; // 24 hours in seconds
+
+      // Generate JWT with expiration
+      const token = await sign(
+        {
+          userId: user[0].id,
+          email: user[0].email,
+          groupId: user[0].groupId,
+          exp: tokenExpiredAt, // Add expiration to JWT payload
+        },
+        JWT_SECRET
+      );
+
+      let userData = await db
+        .select()
+        .from(userSchema)
+        .where(eq(userSchema.id, user[0].id))
+        .limit(1)
+        .leftJoin(
+          kelompokKomunitasSchema,
+          eq(userSchema['groupId'], kelompokKomunitasSchema['id'])
+        );
+
+      userData = reformatMainKey(userData, ['groupId']);
+
+      // Format tokenExpiredAt as 'YYYY-MM-DD HH:mm:ss'
+      const tokenExpiredAtFormatted = new Date(tokenExpiredAt * 1000).toISOString();
+
+      return c.json({
+        data: {
+          token,
+          tokenExpiredAt: tokenExpiredAtFormatted,
+          user: userData[0],
+        },
+      });
+    } catch (error) {
+      logger.error('Error during sign-in:', error);
+      return c.json({ message: 'Internal server error.' }, 500);
+    }
+  })
+  .post('/login-with-recaptcha', zValidator('json', loginWithRecaptchaSchema), async (c) => {
     const { email, password, recaptchaToken } = c.req.valid('json');
 
     const verify = await fetch('https://www.google.com/recaptcha/api/siteverify', {

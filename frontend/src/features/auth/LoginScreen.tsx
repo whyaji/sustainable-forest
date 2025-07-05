@@ -57,17 +57,21 @@ export function LoginScreen() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex items-center mb-8">
+        <div className="flex items-center mb-8 flex-col sm:flex-row text-center sm:text-left">
           <Link to="/" className="flex items-center gap-2">
-            <div className="inline-block p-3 bg-gradient-to-r from-muted to-accent rounded-2xl mr-4">
+            <div className="inline-block p-3 bg-gradient-to-r from-muted to-accent rounded-2xl mr-0 sm:mr-4 mb-2 sm:mb-0">
               <Leaf className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl font-black leading-tight">
-              <span className="bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent">
-                SUSTAINABLE
+            <div>
+              <h1 className="text-3xl font-black leading-tight">
+                <span className="bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent">
+                  SUSTAINABLE
+                </span>
+              </h1>
+              <span className="text-foreground ml-0 sm:ml-2 text-3xl font-black leading-tight">
+                FOREST
               </span>
-              <span className="text-foreground ml-2">FOREST</span>
-            </h1>
+            </div>
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-center">
